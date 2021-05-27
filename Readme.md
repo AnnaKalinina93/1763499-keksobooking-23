@@ -1,7 +1,7 @@
 ﻿# Личный проект «Кексобукинг»
 
 * Студент: [Анна Калинина](https://up.htmlacademy.ru/javascript/23/user/1763499).
-* Наставник: [Денис Горшков](https://github.com/satrasmatras).
+* Наставник: [Денис Горшков](https://htmlacademy.ru/profile/satrasmatras).
 
 ---
 
