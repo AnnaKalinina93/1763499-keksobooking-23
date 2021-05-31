@@ -1,4 +1,4 @@
-const ReturnsRandomNumber = function (min, max) {
+const getRandomNumber = (min, max) => {
   if (max > min && max >=0 && min >=0) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -7,13 +7,13 @@ const ReturnsRandomNumber = function (min, max) {
   }
   return 'Задайте верные параметры функции.Число "от" должно быть меньше числа "до" и оба больше нуля';
 };
-ReturnsRandomNumber (5,12);
+getRandomNumber (5,12);
 
-const ReturnsRandomFractionalNumber = function (min, max ,numberAfterDecimalPoint) {
+const getRandomFractionalNumber = (min, max ,numberAfterDecimalPoint = 2) => {
   if (max > min && max >=0 && min >=0) {
-    const Number = Math.random() * (max - min+1) + min;
-    return Number.toFixed(numberAfterDecimalPoint);
+    const intermediateValue = Math.random() * (max - min+1) + min;
+    return Number(intermediateValue.toFixed(numberAfterDecimalPoint));
   }
   return 'Задайте верные параметры функции.Число "от" должно быть меньше числа "до" и оба больше нуля';
 };
-ReturnsRandomFractionalNumber (2, 6, 4);
+getRandomFractionalNumber (2, 6, 4);
