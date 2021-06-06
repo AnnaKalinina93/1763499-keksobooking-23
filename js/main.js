@@ -85,12 +85,11 @@ const FEATURES = [
 // функция по возвращению массива со случайным количесвом элементов
 const getRandomArray = (array) => {
   const randomArray = [];
-  for (let i = 0; i < getRandomNumber (0, array.length); i++) {
+  for (let i = 0; i < getRandomNumber(0, array.length); i++) {
     randomArray[i] =getRandomArrayElement[array];
-    if (randomArray[i] === randomArray[i-1]) {
-      getRandomArray ();
+    if (randomArray[i] !== randomArray[i-1]) {
+      randomArray[i];
     }
-    randomArray[i];
   }
   return randomArray;
 };
@@ -160,6 +159,5 @@ const dataGeneration = [
   creatObject(),
   creatObject(),
 ];
-
 dataGeneration;
 
