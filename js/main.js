@@ -36,13 +36,13 @@ const IMAGE_ADRESS = [
   'img/avatars/user08.png',
 ] ;
 
-const creatAuthor =() => {
+const createAuthor =() => {
   return {
     avatar: getRandomArrayElement(IMAGE_ADRESS),
   };
 };
 
-const TITLE = [
+const TITLES = [
   'One-room apartment',
   '2 bedroom apartment',
   '3-room apartment',
@@ -51,28 +51,37 @@ const TITLE = [
   'Tanhouse',
   'Residential one-storey house',
 ];
-const creatTitle = () =>  getRandomArrayElement(TITLE);
-
-const creatAddress =() => [
-  getRandomFractionalNumber(35.817,35.830),
-  getRandomFractionalNumber(139.740,139.930),
+const createTitle = () =>  getRandomArrayElement(TITLES);
+const MIN_X=35.65;
+const MAX_X=35.7;
+const MIN_Y=139.7;
+const MAX_Y=139.8;
+const createAddress =() => [
+  getRandomFractionalNumber(MIN_X,MAX_X),
+  getRandomFractionalNumber(MIN_Y,MAX_Y),
 ];
-const creatPrice = () => getRandomNumber(0, 10000000);
-const TYPE = [
+const MIN_PRICE=0;
+const MAX_PRICE = 10000000;
+const createPrice = () => getRandomNumber(MIN_PRICE, MAX_PRICE);
+const TYPES = [
   'palace',
   'flat',
   'house',
   'bungalow',
   'hotel',
 ];
-const creatType = () => getRandomArrayElement(TYPE);
-const creatRooms = () => getRandomNumber(0, 20);
-const creatGuests = () => getRandomNumber(0, 20);
-const CHECKTIME = [
+const createType = () => getRandomArrayElement(TYPES);
+const MIN_ROOMS=1;
+const MAX_ROOMS=10;
+const createRooms = () => getRandomNumber(MIN_ROOMS, MAX_ROOMS);
+const MIN_GUETS=1;
+const MAX_GUETS=10;
+const createGuests = () => getRandomNumber(MIN_GUETS, MAX_GUETS);
+const CHECKTIMES = [
   '12:00', '13:00', '14:00',
 ];
-const creatCheckIn = () => getRandomArrayElement(CHECKTIME);
-const creatCheckOut = () => getRandomArrayElement(CHECKTIME);
+const createCheckIn = () => getRandomArrayElement(CHECKTIMES);
+const createCheckOut = () => getRandomArrayElement(CHECKTIMES);
 const FEATURES = [
   'wifi',
   'dishwasher',
@@ -94,70 +103,58 @@ const getRandomArray = (array) => {
   return randomArray;
 };
 
-const creatFeatures = () => getRandomArray(FEATURES);
-const DESCRIPTION = [
+const createFeatures = () => getRandomArray(FEATURES);
+const DESCRIPTIONS = [
   'Bright apartment with windows on the sunny side',
   'Huge apartment with a balcony',
   'House with a garden',
   'Located not far from the metro',
 ];
-const creatDescription = () => getRandomArrayElement(DESCRIPTION);
+const createDescription = () => getRandomArrayElement(DESCRIPTIONS);
 const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
-const creatPhotos = () => getRandomArray(PHOTOS);
-const creatLocation = () => {
+const createPhotos = () => getRandomArray(PHOTOS);
+const createLocation = () => {
   return {
-    lat: getRandomFractionalNumber(35.65,35.7) ,
-    lng: getRandomFractionalNumber(139.7, 139.8),
+    lat: getRandomFractionalNumber(MIN_X,MAX_X) ,
+    lng: getRandomFractionalNumber(MIN_Y, MAX_Y),
   };
 };
 
 
 // создание объекта Offer
 
-const creatOffer = () => {
+const createOffer = () => {
   return {
-    title : creatTitle() ,
-    adress: creatAddress() ,
-    price: creatPrice() ,
-    type: creatType() ,
-    rooms: creatRooms() ,
-    guests: creatGuests() ,
-    checkin: creatCheckIn() ,
-    checkout: creatCheckOut() ,
-    features: creatFeatures() ,
-    description: creatDescription() ,
-    photos: creatPhotos() ,
+    title : createTitle() ,
+    adress: createAddress() ,
+    price: createPrice() ,
+    type: createType() ,
+    rooms: createRooms() ,
+    guests: createGuests() ,
+    checkin: createCheckIn() ,
+    checkout: createCheckOut() ,
+    features: createFeatures() ,
+    description: createDescription() ,
+    photos: createPhotos() ,
   };
 };
 
 
 // наполнение одного элемента массива в виде объекта
 
-const creatObject = () => {
+const createObject = () => {
   return {
-    author: creatAuthor() ,
-    offer: creatOffer() ,
-    location: creatLocation() ,
+    author: createAuthor() ,
+    offer: createOffer() ,
+    location: createLocation() ,
   };
 };
 
 // создание массива из 10 объектов
 
-const dataGeneration = [
-  creatObject(),
-  creatObject(),
-  creatObject(),
-  creatObject(),
-  creatObject(),
-  creatObject(),
-  creatObject(),
-  creatObject(),
-  creatObject(),
-  creatObject(),
-];
-dataGeneration;
+const dataGeneration = Array(10).fill(createObject());
 
