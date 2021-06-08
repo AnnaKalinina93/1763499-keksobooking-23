@@ -80,9 +80,9 @@ const COUNT = 8;
 
 // создание объекта для ондого элемента массива
 
-const createObject = () => {
+const createObject = (index) => {
   const avatar = {
-    avatar: `img/avatars/user0${getRandomNumber(1, COUNT)}.png`,
+    avatar: `img/avatars/user0${index+1}.png`,
   };
   const features = getRandomArray(FEATURES);
   const checkin = getRandomArrayElement(CHECKTIMES);
@@ -121,13 +121,13 @@ const createObject = () => {
 
 // функция по созданию массива из index объектов
 
-const N = 10;
+
 const createData = (n) => {
   const newArray = [];
   for (let i = 0; i < n; i++) {
-    newArray.push(createObject());
+    newArray.push(createObject(i));
   }
   return newArray;
 };
 
-createData(N);
+createData(COUNT);
