@@ -125,7 +125,7 @@ const N = 10;
 const createData = (n) => {
   const newArray = [];
   for (let i = 0; i < n; i++) {
-    newArray.push(createObject(i));
+    newArray.push(createObject());
   }
   return newArray;
 };
