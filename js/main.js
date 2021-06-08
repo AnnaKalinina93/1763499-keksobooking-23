@@ -41,7 +41,6 @@ const TITLES = [
   'Tanhouse',
   'Residential one-storey house',
 ];
-const INDEX = 8;
 const MIN_X=35.65;
 const MAX_X=35.7;
 const MIN_Y=139.7;
@@ -81,14 +80,12 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
-
+const COUNT = 8;
 // создание объекта для ондого элемента массива
 
 const createObject = () => {
-  const createAuthor = (index) => {
-    return {
-      avatar: `img/avatars/user0${getRandomNumber(1,index)}.png`,
-    };
+  const avatar = {
+    avatar: `img/avatars/user0${getRandomNumber(1,COUNT)}.png`,
   };
   const features = getRandomArray(FEATURES);
   const checkin = getRandomArrayElement(CHECKTIMES);
@@ -107,7 +104,7 @@ const createObject = () => {
   const location = address;
 
   return {
-    author: createAuthor(INDEX) ,
+    author: avatar ,
     offer:  {
       title ,
       address ,
@@ -126,13 +123,13 @@ const createObject = () => {
 };
 
 // функция по созданию массива из index объектов
-
-const dataGeneration =(index) =>  {
-  let newArray =[];
-  for ( let i=0; i< index; i++){
-    newArray[i] = createObject();
+const N =10;
+const createData =(n) =>  {
+  const newArray =[];
+  for ( let i=0; i< n; i++){
+    newArray.push(createObject(i));
   }
   return newArray;
 };
 
-dataGeneration(10);
+createData(N);
