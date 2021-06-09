@@ -94,12 +94,11 @@ const createObject = (index) => {
   const rooms = getRandomNumber(MIN_ROOMS, MAX_ROOMS);
   const guests = getRandomNumber(MIN_GUETS, MAX_GUETS);
   const price = getRandomNumber(MIN_PRICE, MAX_PRICE);
-  const address = {
+  const location = {
     lat: getRandomFractionalNumber(MIN_X, MAX_X),
     lng: getRandomFractionalNumber(MIN_Y, MAX_Y),
   };
-  const location = address;
-
+  const address = [location.lat, location.lng].join(', ');
   return {
     author: avatar,
     offer: {
