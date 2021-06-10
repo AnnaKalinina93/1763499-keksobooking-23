@@ -1,3 +1,4 @@
+/* eslint-disable id-length */
 import { getRandomNumber,
   getRandomFractionalNumber,
   getRandomArrayElement,
@@ -95,4 +96,13 @@ const createObject = (index) => {
   };
 };
 
-export {createObject};
+// функция по созданию массива данных
+
+const createData = (n) => {
+  const newArray = [];
+  for (let i = 0; i < n; i++) {
+    newArray.push(createObject(i));
+  }
+  return newArray;
+};
+export {createData};
