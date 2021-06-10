@@ -3,7 +3,7 @@ import { getRandomNumber,
   getRandomFractionalNumber,
   getRandomArrayElement,
   getRandomArray
-} from './utils/util.js';
+} from './utils.js';
 
 // входные данные
 
@@ -98,11 +98,11 @@ const createObject = (index) => {
 
 // функция по созданию массива данных
 
-const createData = (n) => {
+const createObjects = (n) => {
   const newArray = [];
   for (let i = 0; i < n; i++) {
     newArray.push(createObject(i));
   }
   return newArray;
 };
-export {createData};
+export {createObjects};

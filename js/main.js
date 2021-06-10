@@ -1,5 +1,5 @@
-import {createData} from './utils/data.js';
+import {createObjects} from './data.js';
 
 const COUNT = 8;
 
-createData(COUNT);
+createObjects(COUNT);
