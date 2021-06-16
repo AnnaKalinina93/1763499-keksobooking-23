@@ -1,5 +1,2 @@
-import {createObjects} from './data.js';
+import './popup.js';
 
-const COUNT = 8;
-
-createObjects(COUNT);
