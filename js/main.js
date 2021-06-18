@@ -1,5 +1,7 @@
 import {createObjects} from './data.js';
+import{renderCard} from './popup.js';
 
-const COUNT = 8;
+const COUNT = 8 ;
+const Objects = createObjects(COUNT);
 
-createObjects(COUNT);
+renderCard(Objects[0]);
