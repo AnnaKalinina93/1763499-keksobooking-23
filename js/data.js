@@ -21,7 +21,7 @@ const MAX_X = 35.7;
 const MIN_Y = 139.7;
 const MAX_Y = 139.8;
 const MIN_PRICE = 0;
-const MAX_PRICE = 10000;
+const MAX_PRICE = 10000000;
 const TYPES = [
   'palace',
   'flat',
