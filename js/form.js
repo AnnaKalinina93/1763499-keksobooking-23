@@ -52,6 +52,28 @@ adFormLabel.addEventListener('input', () => {
   adFormLabel.reportValidity();
 });
 
+// тип жилья
+
+const type = document.querySelector('#type');
+let minPrice = 0;
+type.addEventListener('click', () => {
+  if (type.value === 'bungalow') {
+    minPrice = 0;
+  }
+  if (type.value === 'flat') {
+    minPrice = 1000;
+  }
+  if (type.value === 'hotel') {
+    minPrice = 3000;
+  }
+  if (type.value === 'house') {
+    minPrice = 5000;
+  }
+  if (type.value === 'palace') {
+    minPrice = 10000;
+  }
+});
+
 //валидация цен
 
 const MAX_PRICE = 1000000;
@@ -59,8 +81,10 @@ const price = document.querySelector('#price');
 
 price.addEventListener('input', () => {
   const valuePrice = price.value;
-
-  if (valuePrice > MAX_PRICE) {
+  if (valuePrice < minPrice) {
+    price.setCustomValidity(`Минимальная цена за ночь  ${minPrice}`);
+  }
+  else if (valuePrice > MAX_PRICE) {
     price.setCustomValidity(`Укажите цену ниже ${MAX_PRICE}`);
   } else {
     price.setCustomValidity('');
@@ -114,3 +138,36 @@ roomNumber.addEventListener('click', () => {
   capacitys[3].removeAttribute('selected');
 
 });
+
+//выбор форм заезда и выезда
+
+const timeIn = document.querySelector('#timein');
+const timeOut = document.querySelector('#timeout');
+const timeOutOptions = timeOut.querySelectorAll('option');
+const timeInOptions = timeIn.querySelectorAll('option');
+
+timeIn.addEventListener('click', () => {
+  for (let i = 0; i < timeOutOptions.length; i++) {
+    if (timeIn.value !== timeOutOptions[i].value ) {
+      timeOutOptions[i].setAttribute('disabled', 'disabled');
+    } else {
+      timeOutOptions[i].removeAttribute('disabled');
+      timeOutOptions[i].setAttribute('selected', true);
+    }
+    timeOutOptions[i].removeAttribute('selected');
+  }
+});
+/*
+timeOut.addEventListener('click', () => {
+  for (let i = 0; i < timeInOptions.length; i++) {
+    if (timeOut.value !== timeInOptions[i].value ) {
+      timeInOptions[i].setAttribute('disabled', 'disabled');
+    } else {
+      timeInOptions[i].removeAttribute('disabled');
+      timeInOptions[i].setAttribute('selected', true);
+    }
+    timeInOptions[i].removeAttribute('selected');
+  }
+});
+*/
+
