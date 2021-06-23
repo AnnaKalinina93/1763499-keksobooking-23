@@ -29,7 +29,7 @@ const enableForm = (() => {
   fieldsetMap.removeAttribute('disabled');
 });
 
-export { disableForm, enableForm };
+
 
 //валидация заголовка
 
@@ -37,8 +37,7 @@ const MIN_LABEL_LENGTH = 30;
 const MAX_LABEL_LENGTH = 100;
 
 const adFormLabel = document.querySelector('#title');
-
-adFormLabel.addEventListener('input', () => {
+const onTitleInput = () => {
   const valueLength = adFormLabel.value.length;
 
   if (valueLength < MIN_LABEL_LENGTH) {
@@ -50,47 +49,45 @@ adFormLabel.addEventListener('input', () => {
   }
 
   adFormLabel.reportValidity();
-});
+};
 
-// тип жилья
+
+//зависимость типа жилья от цены
 
 const type = document.querySelector('#type');
+const MIN_PRICE = [
+  0,
+  1000,
+  3000,
+  5000,
+  10000,
+];
 let minPrice = 0;
-type.addEventListener('click', () => {
-  if (type.value === 'bungalow') {
-    minPrice = 0;
+const onTypeChange = () => {
+  for (let i = 0; i < type.options.length; i++) {
+    if (type.options.selectedIndex === i) { minPrice = MIN_PRICE[i]; }
   }
-  if (type.value === 'flat') {
-    minPrice = 1000;
-  }
-  if (type.value === 'hotel') {
-    minPrice = 3000;
-  }
-  if (type.value === 'house') {
-    minPrice = 5000;
-  }
-  if (type.value === 'palace') {
-    minPrice = 10000;
-  }
-});
+};
+
 
 //валидация цен
 
 const MAX_PRICE = 1000000;
 const price = document.querySelector('#price');
-
-price.addEventListener('input', () => {
+const onPriceInput = () => {
   const valuePrice = price.value;
   if (valuePrice < minPrice) {
     price.setCustomValidity(`Минимальная цена за ночь  ${minPrice}`);
   }
   else if (valuePrice > MAX_PRICE) {
     price.setCustomValidity(`Укажите цену ниже ${MAX_PRICE}`);
-  } else {
+  }
+  else {
     price.setCustomValidity('');
   }
   price.reportValidity();
-});
+};
+
 
 // валидация кол-ва комнат и гостей
 
@@ -100,9 +97,7 @@ const capacitys = capacity.querySelectorAll('option');
 capacitys[0].setAttribute('disabled', 'disabled');
 capacitys[1].setAttribute('disabled', 'disabled');
 capacitys[3].setAttribute('disabled', 'disabled');
-
-roomNumber.addEventListener('click', () => {
-
+const onRoomChange = () => {
   if (roomNumber.value === '1') {
     capacitys[0].setAttribute('disabled', 'disabled');
     capacitys[1].setAttribute('disabled', 'disabled');
@@ -136,38 +131,41 @@ roomNumber.addEventListener('click', () => {
   }
   capacitys[2].removeAttribute('selected');
   capacitys[3].removeAttribute('selected');
+};
 
-});
 
-//выбор форм заезда и выезда
+//вылидация времени
 
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
-const timeOutOptions = timeOut.querySelectorAll('option');
-const timeInOptions = timeIn.querySelectorAll('option');
 
-timeIn.addEventListener('click', () => {
-  for (let i = 0; i < timeOutOptions.length; i++) {
-    if (timeIn.value !== timeOutOptions[i].value ) {
-      timeOutOptions[i].setAttribute('disabled', 'disabled');
-    } else {
-      timeOutOptions[i].removeAttribute('disabled');
-      timeOutOptions[i].setAttribute('selected', true);
+const getChangeTimeIn = () => {
+  const currentIndex = timeIn.selectedIndex;
+  const timesOut = timeOut.options;
+  for (let i = 0; i < timesOut.length; i++) {
+    if (i === currentIndex) {
+      timesOut[i].selected = true;
     }
-    timeOutOptions[i].removeAttribute('selected');
   }
-});
-/*
-timeOut.addEventListener('click', () => {
-  for (let i = 0; i < timeInOptions.length; i++) {
-    if (timeOut.value !== timeInOptions[i].value ) {
-      timeInOptions[i].setAttribute('disabled', 'disabled');
-    } else {
-      timeInOptions[i].removeAttribute('disabled');
-      timeInOptions[i].setAttribute('selected', true);
+};
+const getChangeTimeOut = () => {
+  const currentIndex = timeOut.selectedIndex;
+  const timesIn = timeIn.options;
+  for (let i = 0; i < timesIn.length; i++) {
+    if (i === currentIndex) {
+      timesIn[i].selected = true;
     }
-    timeInOptions[i].removeAttribute('selected');
   }
-});
-*/
+};
 
+
+const getValidation = () => {
+  adFormLabel.addEventListener('input', onTitleInput);
+  type.addEventListener('change', onTypeChange);
+  price.addEventListener('input', onPriceInput);
+  roomNumber.addEventListener('change', onRoomChange);
+  timeIn.addEventListener('change', getChangeTimeIn);
+  timeOut.addEventListener('change', getChangeTimeOut);
+};
+
+export { disableForm, enableForm, getValidation };
