@@ -30,7 +30,6 @@ const enableForm = (() => {
 });
 
 
-
 //валидация заголовка
 
 const MIN_LABEL_LENGTH = 30;
@@ -93,46 +92,34 @@ const onPriceInput = () => {
 
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
-const capacitys = capacity.querySelectorAll('option');
-capacitys[0].setAttribute('disabled', 'disabled');
-capacitys[1].setAttribute('disabled', 'disabled');
-capacitys[3].setAttribute('disabled', 'disabled');
+const capacitys = capacity.options;
+for (let i = 0; i < capacitys.length; i++) {
+  if (!capacitys[i].selected) { capacitys[i].disabled = true; }
+}
 const onRoomChange = () => {
-  if (roomNumber.value === '1') {
-    capacitys[0].setAttribute('disabled', 'disabled');
-    capacitys[1].setAttribute('disabled', 'disabled');
-    capacitys[2].removeAttribute('disabled');
-    capacitys[3].setAttribute('disabled', 'disabled');
-    capacitys[2].setAttribute('selected', true);
+  const currentValue = Number(roomNumber.value);
+  if (currentValue !== 100) {
+    for (let i = 0; i < capacitys.length; i++) {
+      if (Number(capacitys[i].value) > currentValue) {
+        capacitys[i].selected = false;
+        capacitys[i].disabled = true;
+      } else {
+        capacitys[i].disabled = false;
+        capacitys[i].selected = true;
+      }
+    }
+    capacitys[capacitys.length - 1].disabled = true;
+    capacitys[capacitys.length - 1].selected = false;
   }
-
-  if (roomNumber.value === '2') {
-    capacitys[0].setAttribute('disabled', 'disabled');
-    capacitys[1].removeAttribute('disabled');
-    capacitys[2].removeAttribute('disabled');
-    capacitys[3].setAttribute('disabled', 'disabled');
-    capacitys[2].setAttribute('selected', true);
+  if (currentValue === 100) {
+    for (let i = 0; i < capacitys.length - 1; i++) {
+      capacitys[i].disabled = true;
+      capacitys[i].selected = false;
+    }
+    capacitys[capacitys.length - 1].disabled = false;
+    capacitys[capacitys.length - 1].selected = true;
   }
-
-  if (roomNumber.value === '3') {
-    capacitys[0].removeAttribute('disabled');
-    capacitys[1].removeAttribute('disabled');
-    capacitys[2].removeAttribute('disabled');
-    capacitys[3].setAttribute('disabled', 'disabled');
-    capacitys[2].setAttribute('selected', true);
-  }
-
-  if (roomNumber.value === '100') {
-    capacitys[0].setAttribute('disabled', 'disabled');
-    capacitys[1].setAttribute('disabled', 'disabled');
-    capacitys[2].setAttribute('disabled', 'disabled');
-    capacitys[3].removeAttribute('disabled');
-    capacitys[3].setAttribute('selected', true);
-  }
-  capacitys[2].removeAttribute('selected');
-  capacitys[3].removeAttribute('selected');
 };
-
 
 //вылидация времени
 
