@@ -29,7 +29,6 @@ const enableForm = (() => {
   fieldsetMap.removeAttribute('disabled');
 });
 
-export { disableForm, enableForm };
 
 //валидация заголовка
 
@@ -37,8 +36,7 @@ const MIN_LABEL_LENGTH = 30;
 const MAX_LABEL_LENGTH = 100;
 
 const adFormLabel = document.querySelector('#title');
-
-adFormLabel.addEventListener('input', () => {
+const onTitleInput = () => {
   const valueLength = adFormLabel.value.length;
 
   if (valueLength < MIN_LABEL_LENGTH) {
@@ -50,67 +48,111 @@ adFormLabel.addEventListener('input', () => {
   }
 
   adFormLabel.reportValidity();
-});
+};
+
+
+//зависимость типа жилья от цены
+
+const type = document.querySelector('#type');
+const MIN_PRICE = [
+  0,
+  1000,
+  3000,
+  5000,
+  10000,
+];
+let minPrice = 0;
+const onTypeChange = () => {
+  for (let i = 0; i < type.options.length; i++) {
+    if (type.options.selectedIndex === i) { minPrice = MIN_PRICE[i]; }
+  }
+};
+
 
 //валидация цен
 
 const MAX_PRICE = 1000000;
 const price = document.querySelector('#price');
-
-price.addEventListener('input', () => {
+const onPriceInput = () => {
   const valuePrice = price.value;
-
-  if (valuePrice > MAX_PRICE) {
+  if (valuePrice < minPrice) {
+    price.setCustomValidity(`Минимальная цена за ночь  ${minPrice}`);
+  }
+  else if (valuePrice > MAX_PRICE) {
     price.setCustomValidity(`Укажите цену ниже ${MAX_PRICE}`);
-  } else {
+  }
+  else {
     price.setCustomValidity('');
   }
   price.reportValidity();
-});
+};
+
 
 // валидация кол-ва комнат и гостей
 
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
-const capacitys = capacity.querySelectorAll('option');
-capacitys[0].setAttribute('disabled', 'disabled');
-capacitys[1].setAttribute('disabled', 'disabled');
-capacitys[3].setAttribute('disabled', 'disabled');
-
-roomNumber.addEventListener('click', () => {
-
-  if (roomNumber.value === '1') {
-    capacitys[0].setAttribute('disabled', 'disabled');
-    capacitys[1].setAttribute('disabled', 'disabled');
-    capacitys[2].removeAttribute('disabled');
-    capacitys[3].setAttribute('disabled', 'disabled');
-    capacitys[2].setAttribute('selected', true);
+const capacitys = capacity.options;
+for (let i = 0; i < capacitys.length; i++) {
+  if (!capacitys[i].selected) { capacitys[i].disabled = true; }
+}
+const onRoomChange = () => {
+  const currentValue = Number(roomNumber.value);
+  if (currentValue !== 100) {
+    for (let i = 0; i < capacitys.length; i++) {
+      if (Number(capacitys[i].value) > currentValue) {
+        capacitys[i].selected = false;
+        capacitys[i].disabled = true;
+      } else {
+        capacitys[i].disabled = false;
+        capacitys[i].selected = true;
+      }
+    }
+    capacitys[capacitys.length - 1].disabled = true;
+    capacitys[capacitys.length - 1].selected = false;
   }
-
-  if (roomNumber.value === '2') {
-    capacitys[0].setAttribute('disabled', 'disabled');
-    capacitys[1].removeAttribute('disabled');
-    capacitys[2].removeAttribute('disabled');
-    capacitys[3].setAttribute('disabled', 'disabled');
-    capacitys[2].setAttribute('selected', true);
+  if (currentValue === 100) {
+    for (let i = 0; i < capacitys.length - 1; i++) {
+      capacitys[i].disabled = true;
+      capacitys[i].selected = false;
+    }
+    capacitys[capacitys.length - 1].disabled = false;
+    capacitys[capacitys.length - 1].selected = true;
   }
+};
 
-  if (roomNumber.value === '3') {
-    capacitys[0].removeAttribute('disabled');
-    capacitys[1].removeAttribute('disabled');
-    capacitys[2].removeAttribute('disabled');
-    capacitys[3].setAttribute('disabled', 'disabled');
-    capacitys[2].setAttribute('selected', true);
+//вылидация времени
+
+const timeIn = document.querySelector('#timein');
+const timeOut = document.querySelector('#timeout');
+
+const getChangeTimeIn = () => {
+  const currentIndex = timeIn.selectedIndex;
+  const timesOut = timeOut.options;
+  for (let i = 0; i < timesOut.length; i++) {
+    if (i === currentIndex) {
+      timesOut[i].selected = true;
+    }
   }
-
-  if (roomNumber.value === '100') {
-    capacitys[0].setAttribute('disabled', 'disabled');
-    capacitys[1].setAttribute('disabled', 'disabled');
-    capacitys[2].setAttribute('disabled', 'disabled');
-    capacitys[3].removeAttribute('disabled');
-    capacitys[3].setAttribute('selected', true);
+};
+const getChangeTimeOut = () => {
+  const currentIndex = timeOut.selectedIndex;
+  const timesIn = timeIn.options;
+  for (let i = 0; i < timesIn.length; i++) {
+    if (i === currentIndex) {
+      timesIn[i].selected = true;
+    }
   }
-  capacitys[2].removeAttribute('selected');
-  capacitys[3].removeAttribute('selected');
+};
 
-});
+
+const getValidation = () => {
+  adFormLabel.addEventListener('input', onTitleInput);
+  type.addEventListener('change', onTypeChange);
+  price.addEventListener('input', onPriceInput);
+  roomNumber.addEventListener('change', onRoomChange);
+  timeIn.addEventListener('change', getChangeTimeIn);
+  timeOut.addEventListener('change', getChangeTimeOut);
+};
+
+export { disableForm, enableForm, getValidation };
