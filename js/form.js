@@ -1,33 +1,4 @@
 /* eslint-disable id-length */
-const adForm = document.querySelector('.ad-form');
-const fieldsetsForm = adForm.querySelectorAll('fieldset');
-const mapFilters = document.querySelector('.map__filters');
-const selects = mapFilters.querySelectorAll('select');
-const fieldsetMap = mapFilters.querySelector('fieldset');
-
-const disableForm = (() => {
-  adForm.classList.add('ad-form--disabled');
-  for (let i = 0; i < fieldsetsForm.length; i++) {
-    fieldsetsForm[i].setAttribute('disabled', 'disabled');
-  }
-  mapFilters.classList.add('map__filters--disabled');
-  for (let i = 0; i < selects.length; i++) {
-    selects[i].setAttribute('disabled', 'disabled');
-  }
-  fieldsetMap.setAttribute('disabled', 'disabled');
-});
-
-const enableForm = (() => {
-  adForm.classList.remove('ad-form--disabled');
-  for (let i = 0; i < fieldsetsForm.length; i++) {
-    fieldsetsForm[i].removeAttribute('disabled');
-  }
-  mapFilters.classList.remove('map__filters--disabled');
-  for (let i = 0; i < selects.length; i++) {
-    selects[i].removeAttribute('disabled');
-  }
-  fieldsetMap.removeAttribute('disabled');
-});
 
 
 //валидация заголовка
@@ -53,26 +24,31 @@ const onTitleInput = () => {
 
 //зависимость типа жилья от цены
 
+const TypeToMinPriceMap = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
 const type = document.querySelector('#type');
-const MIN_PRICE = [
-  0,
-  1000,
-  3000,
-  5000,
-  10000,
-];
+const price = document.querySelector('#price');
 let minPrice = 0;
-const onTypeChange = () => {
-  for (let i = 0; i < type.options.length; i++) {
-    if (type.options.selectedIndex === i) { minPrice = MIN_PRICE[i]; }
+const onTypeChange = (event) => {
+  const newValue = event.target.value;
+  for (const key in TypeToMinPriceMap) {
+    if (key === newValue) {
+      minPrice = TypeToMinPriceMap[key];
+      price.placeholder = TypeToMinPriceMap[key];
+      price.min = TypeToMinPriceMap[key];
+    }
   }
 };
-
 
 //валидация цен
 
 const MAX_PRICE = 1000000;
-const price = document.querySelector('#price');
+
 const onPriceInput = () => {
   const valuePrice = price.value;
   if (valuePrice < minPrice) {
@@ -126,33 +102,19 @@ const onRoomChange = () => {
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 
-const getChangeTimeIn = () => {
-  const currentIndex = timeIn.selectedIndex;
-  const timesOut = timeOut.options;
-  for (let i = 0; i < timesOut.length; i++) {
-    if (i === currentIndex) {
-      timesOut[i].selected = true;
-    }
-  }
+const onTimeChange = (event) => {
+  const newValue = event.target.value;
+  timeIn.value = newValue;
+  timeOut.value = newValue;
 };
-const getChangeTimeOut = () => {
-  const currentIndex = timeOut.selectedIndex;
-  const timesIn = timeIn.options;
-  for (let i = 0; i < timesIn.length; i++) {
-    if (i === currentIndex) {
-      timesIn[i].selected = true;
-    }
-  }
-};
-
 
 const getValidation = () => {
   adFormLabel.addEventListener('input', onTitleInput);
   type.addEventListener('change', onTypeChange);
   price.addEventListener('input', onPriceInput);
   roomNumber.addEventListener('change', onRoomChange);
-  timeIn.addEventListener('change', getChangeTimeIn);
-  timeOut.addEventListener('change', getChangeTimeOut);
+  timeIn.addEventListener('change', onTimeChange);
+  timeOut.addEventListener('change', onTimeChange);
 };
 
-export { disableForm, enableForm, getValidation };
+export { getValidation };

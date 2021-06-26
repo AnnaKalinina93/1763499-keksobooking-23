@@ -88,7 +88,7 @@ const renderCard = (object) => {
   }
 
   map.appendChild(cardElement);
-
+  return cardElement;
 };
 
 export { renderCard };

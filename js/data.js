@@ -16,7 +16,7 @@ const TITLES = [
   'Tanhouse',
   'Residential one-storey house',
 ];
-const MIN_X = 35.65;
+const MIN_X = 35.655;
 const MAX_X = 35.7;
 const MIN_Y = 139.7;
 const MAX_Y = 139.8;
