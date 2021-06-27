@@ -36,13 +36,9 @@ const price = document.querySelector('#price');
 let minPrice = 0;
 const onTypeChange = (event) => {
   const newValue = event.target.value;
-  for (const key in TypeToMinPriceMap) {
-    if (key === newValue) {
-      minPrice = TypeToMinPriceMap[key];
-      price.placeholder = TypeToMinPriceMap[key];
-      price.min = TypeToMinPriceMap[key];
-    }
-  }
+  minPrice = TypeToMinPriceMap[newValue];
+  price.placeholder = TypeToMinPriceMap[newValue];
+  price.min = TypeToMinPriceMap[newValue];
 };
 
 //валидация цен

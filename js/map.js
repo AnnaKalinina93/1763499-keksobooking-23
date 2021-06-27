@@ -1,18 +1,20 @@
+import { createCard } from './card.js';
 let map;
+const LAT_CENTRE = 35.6894;
+const LNG_CENTRE = 139.69224;
 function initailizeMap(callback) {
-  map = L.map('map-canvas')
-    .setView({
-      lat: 35.6894,
-      lng: 139.69224,
-    }, 10);
+  map = L.map('map-canvas');
+  map.on('load', callback);
+  map.setView({
+    lat: LAT_CENTRE,
+    lng: LNG_CENTRE,
+  }, 10);
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(map);
-  map.on('load', callback());
-
 }
 
 const getMainPinIcon = () => {
@@ -41,10 +43,10 @@ const getMainPinIcon = () => {
 };
 
 
-const createMarker = (object, renderCard) => {
+const createMarker = (object) => {
   const markerGroup = L.layerGroup().addTo(map);
-  const lat = Number(object.location.lat);
-  const lng = Number(object.location.lng);
+  const lat = object.location.lat;
+  const lng = object.location.lng;
   const icon = L.icon({
     iconUrl: '../img/pin.svg',
     iconSize: [40, 40],
@@ -62,15 +64,15 @@ const createMarker = (object, renderCard) => {
   );
 
   marker.addTo(markerGroup)
-    .bindPopup(renderCard(object),
+    .bindPopup(createCard(object),
       {
         keepInView: true,
       });
 };
 
-const getMarkers = (objects, renderCard) => {
+const getMarkers = (objects) => {
   objects.forEach((object) => {
-    createMarker(object, renderCard);
+    createMarker(object);
   });
 
 };

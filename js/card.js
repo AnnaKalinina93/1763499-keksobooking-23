@@ -7,9 +7,7 @@ const TypeNameMap = {
   bungalow: 'Бунгало',
   hotel: 'Отель',
 };
-const renderCard = (object) => {
-  const map = document.querySelector('.map')
-    .querySelector('#map-canvas');
+const createCard = (object) => {
   const cardTemplate = document.querySelector('#card')
     .content
     .querySelector('.popup');
@@ -92,8 +90,7 @@ const renderCard = (object) => {
     avatar.hide();
   }
 
-  map.appendChild(cardElement);
   return cardElement;
 };
 
-export { renderCard };
+export { createCard };
