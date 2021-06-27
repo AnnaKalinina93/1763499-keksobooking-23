@@ -1,12 +1,16 @@
 import { createObjects } from './data.js';
-import { renderCard } from './card.js';
-import { disableForm, enableForm, getValidation } from './form.js';
-
+import { getValidation } from './form.js';
+import { disableForm, enableForm } from './page.js';
+import { initailizeMap, getMainPinIcon, getMarkers } from './map.js';
 const COUNT = 8;
 const objects = createObjects(COUNT);
-renderCard(objects[0]);
+
 
 disableForm();
-enableForm();
-getValidation();
+initailizeMap(() => {
+  enableForm();
+  getMainPinIcon();
+  getMarkers(objects);
+  getValidation();
+});
 

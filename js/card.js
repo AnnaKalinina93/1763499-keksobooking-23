@@ -7,9 +7,7 @@ const TypeNameMap = {
   bungalow: 'Бунгало',
   hotel: 'Отель',
 };
-const renderCard = (object) => {
-  const map = document.querySelector('.map')
-    .querySelector('#map-canvas');
+const createCard = (object) => {
   const cardTemplate = document.querySelector('#card')
     .content
     .querySelector('.popup');
@@ -46,16 +44,21 @@ const renderCard = (object) => {
   description.textContent = object.offer.description;
 
   const arrayPhotos = object.offer.photos;
-  const photoElements = cardElement.querySelector('.popup__photos');
-  let photoElement = photoElements.querySelector('.popup__photo');
+  const photoElement = cardElement.querySelector('.popup__photos')
+    .children;
+  const photoElements = Array.from(photoElement);
+  photoElements.forEach((item) => {
+    item.remove();
+  });
   arrayPhotos.forEach((item) => {
-    photoElement.src = item;
-    photoElements.appendChild(photoElement);
-    photoElement = photoElements.querySelector('.popup__photo')
-      .cloneNode(true);
-    if (photoElement.src === '') {
-      photoElement.hide();
-    }
+    const image = document.createElement('img');
+    image.classList.add('popup__photo');
+    image.style.width = '45px';
+    image.style.height = '40px';
+    image.src = item;
+    image.alt = 'Фотография жилья';
+    cardElement.querySelector('.popup__photos')
+      .appendChild(image);
   });
 
   const avatar = cardElement.querySelector('.popup__avatar');
@@ -87,8 +90,7 @@ const renderCard = (object) => {
     avatar.hide();
   }
 
-  map.appendChild(cardElement);
-
+  return cardElement;
 };
 
-export { renderCard };
+export { createCard };
