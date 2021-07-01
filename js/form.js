@@ -1,6 +1,5 @@
 /* eslint-disable id-length */
-
-
+import { returnMainPinIcon } from './map.js';
 //валидация заголовка
 
 const MIN_LABEL_LENGTH = 30;
@@ -113,4 +112,94 @@ const getValidation = () => {
   timeOut.addEventListener('change', onTimeChange);
 };
 
-export { getValidation };
+
+// вернуть форму в исходное состояние
+
+const formSubmit = document.querySelector('.ad-form');
+const returnOriginalState = () => {
+  formSubmit.reset();
+  returnMainPinIcon();
+
+};
+
+// окно успешной отправки
+
+const openWindow = () => {
+  const success = document.querySelector('#success')
+    .content
+    .querySelector('.success')
+    .cloneNode(true);
+  document.body.appendChild(success);
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      success.classList.add('hidden');
+    }
+  });
+  document.addEventListener('click', () => {
+    success.classList.add('hidden');
+  });
+};
+
+// окно ошибки
+
+const openError = () => {
+  const errorTemplate = document.querySelector('#error')
+    .content
+    .querySelector('.error')
+    .cloneNode(true);
+  document.body.appendChild(errorTemplate);
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      errorTemplate.classList.add('hidden');
+    }
+  });
+  const errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', () => {
+    errorTemplate.classList.add('hidden');
+  });
+  document.addEventListener('click', () => {
+    errorButton.classList.add('hidden');
+  });
+};
+const successSend = () => {
+  openWindow();
+  returnOriginalState();
+};
+// отправка формы
+
+const sendData = () => {
+  formSubmit.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+    fetch(
+      ' https://23.javascript.pages.academy/keksobooking',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((response) => {
+        if (response.ok) {
+          openWindow();
+          returnOriginalState();
+        } else {
+          openError();
+        }
+      })
+      .catch(() => {
+        openError();
+      });
+  });
+};
+
+// нажатие кнопки reset
+
+const reset = () => {
+  const buttonReset = document.querySelector('.ad-form__reset');
+  buttonReset.addEventListener('click', () => {
+    returnOriginalState();
+  });
+};
+export { getValidation, sendData, reset, successSend, openError };

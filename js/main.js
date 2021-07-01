@@ -1,16 +1,15 @@
-import { createObjects } from './data.js';
-import { getValidation } from './form.js';
+import { getValidation, reset } from './form.js';
 import { disableForm, enableForm } from './page.js';
-import { initailizeMap, getMainPinIcon, getMarkers } from './map.js';
-const COUNT = 8;
-const objects = createObjects(COUNT);
-
-
+import { initailizeMap, getMainPinIcon } from './map.js';
+import { getData, sendData } from './api.js';
 disableForm();
+
 initailizeMap(() => {
   enableForm();
   getMainPinIcon();
-  getMarkers(objects);
+  getData();
   getValidation();
-});
 
+});
+sendData();
+reset();

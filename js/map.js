@@ -8,7 +8,7 @@ function initailizeMap(callback) {
   map.setView({
     lat: LAT_CENTRE,
     lng: LNG_CENTRE,
-  }, 10);
+  }, 12);
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -16,7 +16,7 @@ function initailizeMap(callback) {
     },
   ).addTo(map);
 }
-
+let mainPinMarker;
 const getMainPinIcon = () => {
   const mainPinIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
@@ -24,10 +24,10 @@ const getMainPinIcon = () => {
     iconAnchor: [26, 52],
   });
 
-  const mainPinMarker = L.marker(
+  mainPinMarker = L.marker(
     {
-      lat: 35.68945,
-      lng: 139.69255,
+      lat: LAT_CENTRE,
+      lng: LNG_CENTRE,
     },
     {
       draggable: true,
@@ -42,7 +42,16 @@ const getMainPinIcon = () => {
   });
 };
 
-
+const returnMainPinIcon = () => {
+  mainPinMarker.setLatLng({
+    lat: LAT_CENTRE,
+    lng: LNG_CENTRE,
+  });
+  map.setView({
+    lat: LAT_CENTRE,
+    lng: LNG_CENTRE,
+  }, 12);
+};
 const createMarker = (object) => {
   const markerGroup = L.layerGroup().addTo(map);
   const lat = object.location.lat;
@@ -77,5 +86,5 @@ const getMarkers = (objects) => {
 
 };
 
-export { initailizeMap, getMainPinIcon, getMarkers };
+export { initailizeMap, getMainPinIcon, getMarkers, returnMainPinIcon };
 
