@@ -1,5 +1,6 @@
 /* eslint-disable id-length */
 
+
 const TypeNameMap = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -33,15 +34,16 @@ const createCard = (object) => {
   featureListElement.innerHTML = '';
 
   const features = object.offer.features;
-  features.forEach((item) => {
-    const listElement = document.createElement('li');
-    listElement.classList.add('popup__feature');
-    listElement.classList.add(`popup__feature--${item}`);
-    featureListElement.appendChild(listElement);
-  });
-
-  const description = cardElement.querySelector('.popup__description');
-  description.textContent = object.offer.description;
+  if (features) {
+    features.forEach((item) => {
+      const listElement = document.createElement('li');
+      listElement.classList.add('popup__feature');
+      listElement.classList.add(`popup__feature--${item}`);
+      featureListElement.appendChild(listElement);
+    });
+  }
+  const descriptions = cardElement.querySelector('.popup__description');
+  descriptions.textContent = object.offer.description;
 
   const arrayPhotos = object.offer.photos;
   const photoElement = cardElement.querySelector('.popup__photos')
@@ -50,44 +52,44 @@ const createCard = (object) => {
   photoElements.forEach((item) => {
     item.remove();
   });
-  arrayPhotos.forEach((item) => {
-    const image = document.createElement('img');
-    image.classList.add('popup__photo');
-    image.style.width = '45px';
-    image.style.height = '40px';
-    image.src = item;
-    image.alt = 'Фотография жилья';
-    cardElement.querySelector('.popup__photos')
-      .appendChild(image);
-  });
-
+  if (arrayPhotos) {
+    arrayPhotos.forEach((item) => {
+      const image = document.createElement('img');
+      image.classList.add('popup__photo');
+      image.style.width = '45px';
+      image.style.height = '40px';
+      image.src = item;
+      image.alt = 'Фотография жилья';
+      cardElement.querySelector('.popup__photos')
+        .appendChild(image);
+    });
+  }
   const avatar = cardElement.querySelector('.popup__avatar');
   avatar.src = object.author.avatar;
 
   if (!title.textContent) {
-    title.hide();
+    title.classList.add('hide');
   }
   if (!address.textContent) {
-    address.hide();
+    address.classList.add('hide');
   }
   if (!price.textContent) {
-    price.hide();
+    price.classList.add('hide');
   }
   if (!type.textContent) {
-    type.hide();
+    type.classList.add('hide');
   }
   if (!capacity.textContent) {
-    capacity.hide();
+    capacity.classList.add('hide');
   }
   if (!textTime.textContent) {
-    textTime.hide();
+    textTime.classList.add('hide');
   }
-  if (!description.textContent) {
-
-    description.hide();
+  if (!descriptions.textContent) {
+    descriptions.classList.add('hide');
   }
   if (avatar.src.textContent === '') {
-    avatar.hide();
+    avatar.classList.add('hide');
   }
 
   return cardElement;
