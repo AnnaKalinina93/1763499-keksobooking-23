@@ -163,36 +163,6 @@ const openError = () => {
     errorButton.classList.add('hidden');
   });
 };
-const successSend = () => {
-  openWindow();
-  returnOriginalState();
-};
-// отправка формы
-
-const sendData = () => {
-  formSubmit.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const formData = new FormData(evt.target);
-    fetch(
-      ' https://23.javascript.pages.academy/keksobooking',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then((response) => {
-        if (response.ok) {
-          openWindow();
-          returnOriginalState();
-        } else {
-          openError();
-        }
-      })
-      .catch(() => {
-        openError();
-      });
-  });
-};
 
 // нажатие кнопки reset
 
@@ -202,4 +172,4 @@ const reset = () => {
     returnOriginalState();
   });
 };
-export { getValidation, sendData, reset, successSend, openError };
+export { getValidation, reset, openWindow, returnOriginalState, openError };

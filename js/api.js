@@ -1,24 +1,22 @@
-import { getMarkers } from './map.js';
-import { showAlert } from './utils.js';
-import { successSend, openError } from './form.js';
-const getData = () => {
+const BASE_URL = 'https://23.javascript.pages.academy/keksobooking';
+const getData = (onSuccess, onError)=> {
   fetch(
-    'https://23.javascript.pages.academy/keksobooking/data')
+    `${BASE_URL}/data`)
     .then((response) => response.json())
-    .then((cards) => getMarkers(cards))
+    .then((cards) => onSuccess(cards))
 
     .catch(() => {
-      showAlert('При загрузке данных с сервера произошла ошибка . Попробуйте ещё раз');
+      onError();
     });
 };
 
-const sendData = () => {
+const sendData = (onSuccess,onError) => {
   const formSubmit = document.querySelector('.ad-form');
   formSubmit.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(evt.target);
     fetch(
-      ' https://23.javascript.pages.academy/keksobooking',
+      BASE_URL,
       {
         method: 'POST',
         body: formData,
@@ -26,13 +24,13 @@ const sendData = () => {
     )
       .then((response) => {
         if (response.ok) {
-          successSend();
+          onSuccess();
         } else {
-          openError();
+          onError();
         }
       })
       .catch(() => {
-        openError();
+        onError();
       });
   });
 };
