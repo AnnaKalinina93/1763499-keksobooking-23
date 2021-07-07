@@ -1,135 +1,90 @@
+/* eslint-disable id-length */
 import { getMarkers, removeMarkers } from './map.js';
-const housingType = document.querySelector('#housing-type');
-const housingPrice = document.querySelector('#housing-price');
-const housingRooms = document.querySelector('#housing-rooms');
-const housingGuests = document.querySelector('#housing-guests');
-//const housingFeature = document.querySelector('#housing-features');
+const mapFiltersElement = document.querySelector('.map__filters');
+const housingTypeSelectElement = document.querySelector('#housing-type');
+const housingPriceSelectElement = document.querySelector('#housing-price');
+const housingRoomsSelectElement = document.querySelector('#housing-rooms');
+const housingGuestsSelectElement = document.querySelector('#housing-guests');
+const housingFeatureFieldsetElement = document.querySelector('#housing-features');
 
-const clickType = (cb) => {
-  housingType.addEventListener('change', () => {
-    removeMarkers();
-    cb();
-  });
+const ANY_VALUE = 'any';
+
+const PriceKey = {
+  ANY: ANY_VALUE,
+  LOW: 'low',
+  MIDDLE: 'middle',
+  HIGH: 'high',
 };
 
-const clickPrice = (cb) => {
-  housingPrice.addEventListener('change', () => {
-    removeMarkers();
-    cb();
-  });
+const PriceValue = {
+  MIN: 10000,
+  MAX: 50000,
 };
 
-const clickRooms = (cb) => {
-  housingRooms.addEventListener('change', () => {
-    removeMarkers();
-    cb();
-  });
+const housingTypeIsCorrect = (itemValue, filterValue) => filterValue === ANY_VALUE ? true : itemValue === filterValue;
+
+const housingPriceIsCorrect = (itemValue, filterValue) => {
+  switch (filterValue) {
+    case PriceKey.ANY:
+      return true;
+    case PriceKey.LOW:
+      return itemValue < PriceValue.MIN;
+    case PriceKey.MIDDLE:
+      return itemValue >= PriceValue.MIN && itemValue <= PriceValue.MAX;
+    case PriceKey.HIGH:
+      return itemValue > PriceValue.MAX;
+    default: return false;
+  }
 };
 
-const clickGuests = (cb) => {
-  housingGuests.addEventListener('change', () => {
-    removeMarkers();
-    cb();
-  });
-};
-/*
-const clickFeatures = (cb) => {
-  housingFeature.addEventListener('change', (event) => {
-    removeMarkers();
-    cb();
-  });
-};
-const filterFeatures = (card) => {
-  const housingFeatures = housingFeature.querySelectorAll('input');
-  housingFeatures.forEach((item) => {
-    if (item.checked && card.offer.features.includes(item.value) ) { return true; }
-  });
-};
-*/
-const filterGuets = (card) => {
-  if (card.offer.guests === Number(housingGuests.options[housingGuests.selectedIndex].value)) { return true; }
-  if (housingGuests.options[housingGuests.selectedIndex].value === 'any') { return true; }
-  if (card.offer.guests === housingGuests.options[housingGuests.selectedIndex] === 'не для гостей') { return true; }
-};
+const housingRoomsIsCorrect = (itemValue, filterValue) =>
+  filterValue === ANY_VALUE ?
+    true :
+    itemValue === Number(filterValue);
 
 
-const filterCards = (cards) => {
-  const newCards = cards.filter((card) => {
-    if (card.offer.type === housingType.options[housingType.selectedIndex].value) {
-      if (housingPrice.options[housingPrice.selectedIndex].value === 'low' && card.offer.price < 10000) {
-        if (card.offer.rooms === Number(housingRooms.options[housingRooms.selectedIndex].value)) {
-          return filterGuets(card);
-        }
-        if (housingRooms.options[housingRooms.selectedIndex].value === 'any') {
-          return filterGuets(card);
-        }
-      }
-      if (housingPrice.options[housingPrice.selectedIndex].value === 'middle' && card.offer.price >= 10000 && card.offer.price < 50000) {
-        if (card.offer.rooms === Number(housingRooms.options[housingRooms.selectedIndex].value)) {
-          return filterGuets(card);
-        }
-        if (housingRooms.options[housingRooms.selectedIndex].value === 'any') {
-          return filterGuets(card);
-        }
-      }
-      if (housingPrice.options[housingPrice.selectedIndex].value === 'high' && card.offer.price >= 50000) {
-        if (card.offer.rooms === Number(housingRooms.options[housingRooms.selectedIndex].value)) {
-          return filterGuets(card);
-        }
-        if (housingRooms.options[housingRooms.selectedIndex].value === 'any') {
-          return filterGuets(card);
-        }
-      }
-      if (housingPrice.options[housingPrice.selectedIndex].value === 'any') {
-        if (card.offer.rooms === Number(housingRooms.options[housingRooms.selectedIndex].value)) {
-          return filterGuets(card);
-        }
-        if (housingRooms.options[housingRooms.selectedIndex].value === 'any') {
-          return filterGuets(card);
-        }
-      }
+const housingGuestsIsCorrect = (itemValue, filterValue) =>
+  filterValue === ANY_VALUE ?
+    true :
+    itemValue.toString() === filterValue;
 
+const housingFeatureIsCorrect = (itemFeatures, filterFeature) => {
+  const filterFeatures = filterFeature.querySelectorAll('input:checked');
+  if (filterFeatures.length === 0) { return true; }
+  else if (itemFeatures && Array.from(filterFeatures).every((element) =>
+    itemFeatures.indexOf(element.value) !== -1)) { return itemFeatures; }
+};
+
+const cardIsCorrect = (card) =>
+  housingTypeIsCorrect(card.offer.type, housingTypeSelectElement.value) &&
+  housingPriceIsCorrect(card.offer.price, housingPriceSelectElement.value) &&
+  housingRoomsIsCorrect(card.offer.rooms, housingRoomsSelectElement.value) &&
+  housingGuestsIsCorrect(card.offer.guests, housingGuestsSelectElement.value) &&
+  housingFeatureIsCorrect(card.offer.features, housingFeatureFieldsetElement);
+
+const getFilteredCards = (cards) => {
+  const filteredCards = [];
+
+  for (let i = 0; i < cards.length; i++) {
+    const currentCard = cards[i];
+
+    if (cardIsCorrect(currentCard)) {
+      filteredCards.push(currentCard);
     }
 
-    if (housingType.options[housingType.selectedIndex].value === 'any') {
-      if (housingPrice.options[housingPrice.selectedIndex].value === 'low' && card.offer.price < 10000) {
-        if (card.offer.rooms === Number(housingRooms.options[housingRooms.selectedIndex].value)) {
-          return filterGuets(card);
-        }
-        if (housingRooms.options[housingRooms.selectedIndex].value === 'any') {
-          return filterGuets(card);
-        }
-      }
-      if (housingPrice.options[housingPrice.selectedIndex].value === 'middle' && card.offer.price >= 10000 && card.offer.price < 50000) {
-        if (card.offer.rooms === Number(housingRooms.options[housingRooms.selectedIndex].value)) {
-          return filterGuets(card);
-        }
-        if (housingRooms.options[housingRooms.selectedIndex].value === 'any') {
-          return filterGuets(card);
-        }
-      }
-      if (housingPrice.options[housingPrice.selectedIndex].value === 'high' && card.offer.price >= 50000) {
-        if (card.offer.rooms === Number(housingRooms.options[housingRooms.selectedIndex].value)) {
-          return filterGuets(card);
-        }
-        if (housingRooms.options[housingRooms.selectedIndex].value === 'any') {
-          return filterGuets(card);
-        }
-      }
-      if (housingPrice.options[housingPrice.selectedIndex].value === 'any') {
-        if (card.offer.rooms === Number(housingRooms.options[housingRooms.selectedIndex].value)) {
-          return filterGuets(card);
-        }
-        if (housingRooms.options[housingRooms.selectedIndex].value === 'any') {
-          return filterGuets(card);
-        }
-      }
+    if (filteredCards.length === 10) {
+      break;
     }
-    else {
-      return false;
-    }
-  });
-  getMarkers(newCards.slice(0, 10));
+  }
+
+  return filteredCards;
+};
+const updateMarkers = (cards) => {
+  const filteredCards = getFilteredCards(cards);
+  removeMarkers();
+  getMarkers(filteredCards);
 };
 
-export { clickType, clickGuests, clickPrice, clickRooms, filterCards };
+const mapFiltersClick = (cb) => mapFiltersElement.addEventListener('change', () => cb());
+
+export { updateMarkers, mapFiltersClick };

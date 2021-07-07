@@ -3,20 +3,20 @@ import { disableForm, enableForm } from './page.js';
 import { initailizeMap, getMainPinIcon, getMarkers } from './map.js';
 import { getData, sendData } from './api.js';
 import { showAlert } from './utils.js';
-import { clickType, clickGuests, clickPrice, clickRooms, filterCards } from './filter.js';
+import { updateMarkers, mapFiltersClick } from './filter.js';
+import {debounce} from './utils/debounce.js';
 disableForm();
-
+const RERENDER_DELAY = 500;
 initailizeMap(() => {
   enableForm();
   getMainPinIcon();
   getData(
     (cards) => {
       getMarkers(cards.slice(0, 10));
-      clickType(() => filterCards(cards));
-      clickPrice(()=> filterCards(cards));
-      clickRooms(() => filterCards(cards));
-      clickGuests(() => filterCards(cards));
-      //clickFeatures(()=> filterCards(cards));
+      mapFiltersClick(debounce(
+        () => updateMarkers(cards),
+        RERENDER_DELAY,
+      ));
     },
     () => showAlert('При загрузке данных с сервера произошла ошибка . Попробуйте ещё раз'));
   getValidation();
