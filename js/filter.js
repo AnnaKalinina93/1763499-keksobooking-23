@@ -1,5 +1,6 @@
 /* eslint-disable id-length */
 import { getMarkers, removeMarkers } from './map.js';
+import { returnOriginalState } from './form.js';
 const mapFiltersElement = document.querySelector('.map__filters');
 const housingTypeSelectElement = document.querySelector('#housing-type');
 const housingPriceSelectElement = document.querySelector('#housing-price');
@@ -87,4 +88,16 @@ const updateMarkers = (cards) => {
 
 const mapFiltersClick = (cb) => mapFiltersElement.addEventListener('change', () => cb());
 
-export { updateMarkers, mapFiltersClick };
+const resetFilter = () => {
+  mapFiltersElement.reset();
+};
+const clickReset = (cards) => {
+  const buttonReset = document.querySelector('.ad-form__reset');
+  buttonReset.addEventListener('click', () => {
+    resetFilter();
+    removeMarkers();
+    getMarkers(cards.slice(0, 10));
+    returnOriginalState();
+  });
+};
+export { updateMarkers, mapFiltersClick, resetFilter, clickReset };
