@@ -1,5 +1,6 @@
 import { createCard } from './card.js';
 let map;
+
 const LAT_CENTRE = 35.6894;
 const LNG_CENTRE = 139.69224;
 function initailizeMap(callback) {
@@ -52,8 +53,10 @@ const returnMainPinIcon = () => {
     lng: LNG_CENTRE,
   }, 12);
 };
+
+const markerGroup = L.layerGroup();
 const createMarker = (object) => {
-  const markerGroup = L.layerGroup().addTo(map);
+  markerGroup.addTo(map);
   const lat = object.location.lat;
   const lng = object.location.lng;
   const icon = L.icon({
@@ -77,14 +80,14 @@ const createMarker = (object) => {
       {
         keepInView: true,
       });
+
 };
 
 const getMarkers = (objects) => {
   objects.forEach((object) => {
     createMarker(object);
   });
-
 };
 
-export { initailizeMap, getMainPinIcon, getMarkers, returnMainPinIcon };
-
+const removeMarkers = () => { markerGroup.clearLayers(); };
+export { initailizeMap, getMainPinIcon, getMarkers, returnMainPinIcon, removeMarkers };

@@ -1,5 +1,7 @@
 /* eslint-disable id-length */
 import { returnMainPinIcon } from './map.js';
+import { resetFilter } from './filter.js';
+
 //валидация заголовка
 
 const MIN_LABEL_LENGTH = 30;
@@ -170,6 +172,7 @@ const reset = () => {
   const buttonReset = document.querySelector('.ad-form__reset');
   buttonReset.addEventListener('click', () => {
     returnOriginalState();
+    resetFilter();
   });
 };
 export { getValidation, reset, openWindow, returnOriginalState, openError };
