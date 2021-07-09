@@ -3,10 +3,13 @@ import { disableForm, enableForm } from './page.js';
 import { initailizeMap, getMainPinIcon, getMarkers } from './map.js';
 import { getData, sendData } from './api.js';
 import { showAlert } from './utils.js';
+
 import { updateMarkers, mapFiltersClick, resetFilter, clickReset } from './filter.js';
 import { debounce } from './utils/debounce.js';
-disableForm();
+
 const RERENDER_DELAY = 500;
+disableForm();
+
 initailizeMap(() => {
   enableForm();
   getMainPinIcon();

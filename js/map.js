@@ -53,6 +53,7 @@ const returnMainPinIcon = () => {
     lng: LNG_CENTRE,
   }, 12);
 };
+
 const markerGroup = L.layerGroup();
 const createMarker = (object) => {
   markerGroup.addTo(map);

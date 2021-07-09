@@ -1,6 +1,7 @@
 /* eslint-disable id-length */
 import { returnMainPinIcon } from './map.js';
 import { resetFilter } from './filter.js';
+
 //валидация заголовка
 
 const MIN_LABEL_LENGTH = 30;

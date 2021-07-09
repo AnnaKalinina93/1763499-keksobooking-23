@@ -1,4 +1,5 @@
 const BASE_URL = 'https://23.javascript.pages.academy/keksobooking';
+
 const getData = (onSuccess, onError) => {
   fetch(
     `${BASE_URL}/data`)
@@ -35,4 +36,6 @@ const sendData = (onSuccess, onError) => {
 };
 
 export { getData, sendData };
+
+
 
