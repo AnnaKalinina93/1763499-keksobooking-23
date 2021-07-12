@@ -1,8 +1,12 @@
 import { createCard } from './card.js';
-let map;
 
+let map;
+let mainPinMarker;
+const markerGroup = L.layerGroup();
 const LAT_CENTRE = 35.6894;
 const LNG_CENTRE = 139.69224;
+const address = document.querySelector('#address');
+
 function initailizeMap(callback) {
   map = L.map('map-canvas');
   map.on('load', callback);
@@ -17,7 +21,7 @@ function initailizeMap(callback) {
     },
   ).addTo(map);
 }
-let mainPinMarker;
+
 const getMainPinIcon = () => {
   const mainPinIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
@@ -36,7 +40,6 @@ const getMainPinIcon = () => {
     },
   );
   mainPinMarker.addTo(map);
-  const address = document.querySelector('#address');
   mainPinMarker.on('moveend', (evt) => {
     const addressPoint = evt.target.getLatLng();
     address.value = `${addressPoint.lat.toFixed(5)},${addressPoint.lng.toFixed(5)}`;
@@ -54,7 +57,6 @@ const returnMainPinIcon = () => {
   }, 12);
 };
 
-const markerGroup = L.layerGroup();
 const createMarker = (object) => {
   markerGroup.addTo(map);
   const lat = object.location.lat;
@@ -89,5 +91,6 @@ const getMarkers = (objects) => {
   });
 };
 
-const removeMarkers = () => { markerGroup.clearLayers(); };
+const removeMarkers = () => markerGroup.clearLayers();
+
 export { initailizeMap, getMainPinIcon, getMarkers, returnMainPinIcon, removeMarkers };

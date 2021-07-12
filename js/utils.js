@@ -1,3 +1,4 @@
+const ALERT_SHOW_TIME = 5000;
 
 const getRandomNumber = (min, max) => {
   if (max > min && max >= 0 && min >= 0) {
@@ -25,7 +26,6 @@ const getRandomArrayElement = (array) => array[getRandomNumber(0, array.length -
 
 const getRandomArray = (array) => array.filter(() => getRandomNumber(0, 1));
 
-const ALERT_SHOW_TIME = 5000;
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
