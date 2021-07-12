@@ -7,22 +7,22 @@ const housingPriceSelectElement = document.querySelector('#housing-price');
 const housingRoomsSelectElement = document.querySelector('#housing-rooms');
 const housingGuestsSelectElement = document.querySelector('#housing-guests');
 const housingFeatureFieldsetElement = document.querySelector('#housing-features');
-
+const buttonReset = document.querySelector('.ad-form__reset');
 const ANY_VALUE = 'any';
-
 const PriceKey = {
   ANY: ANY_VALUE,
   LOW: 'low',
   MIDDLE: 'middle',
   HIGH: 'high',
 };
-
 const PriceValue = {
   MIN: 10000,
   MAX: 50000,
 };
 
-const housingTypeIsCorrect = (itemValue, filterValue) => filterValue === ANY_VALUE ? true : itemValue === filterValue;
+const housingTypeIsCorrect = (itemValue, filterValue) => filterValue === ANY_VALUE ?
+  true :
+  itemValue === filterValue;
 
 const housingPriceIsCorrect = (itemValue, filterValue) => {
   switch (filterValue) {
@@ -65,14 +65,11 @@ const cardIsCorrect = (card) =>
 
 const getFilteredCards = (cards) => {
   const filteredCards = [];
-
   for (let i = 0; i < cards.length; i++) {
     const currentCard = cards[i];
-
     if (cardIsCorrect(currentCard)) {
       filteredCards.push(currentCard);
     }
-
     if (filteredCards.length === 10) {
       break;
     }
@@ -92,7 +89,6 @@ const resetFilter = () => {
   mapFiltersElement.reset();
 };
 const clickReset = (cards) => {
-  const buttonReset = document.querySelector('.ad-form__reset');
   buttonReset.addEventListener('click', () => {
     resetFilter();
     removeMarkers();

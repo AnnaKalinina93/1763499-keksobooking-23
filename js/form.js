@@ -1,30 +1,11 @@
 /* eslint-disable id-length */
 import { returnMainPinIcon } from './map.js';
 import { resetFilter } from './filter.js';
-
-//валидация заголовка
+import { resetPhoto } from './avatar.js';
 
 const MIN_LABEL_LENGTH = 30;
 const MAX_LABEL_LENGTH = 100;
-
 const adFormLabel = document.querySelector('#title');
-const onTitleInput = () => {
-  const valueLength = adFormLabel.value.length;
-
-  if (valueLength < MIN_LABEL_LENGTH) {
-    adFormLabel.setCustomValidity(`Ещё ${MIN_LABEL_LENGTH - valueLength} символов.`);
-  } else if (valueLength > MAX_LABEL_LENGTH) {
-    adFormLabel.setCustomValidity(`Удалите лишние ${valueLength - MAX_LABEL_LENGTH} символы.`);
-  } else {
-    adFormLabel.setCustomValidity('');
-  }
-
-  adFormLabel.reportValidity();
-};
-
-
-//зависимость типа жилья от цены
-
 const TypeToMinPriceMap = {
   bungalow: 0,
   flat: 1000,
@@ -35,16 +16,32 @@ const TypeToMinPriceMap = {
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
 let minPrice = 0;
+const MAX_PRICE = 1000000;
+const roomNumber = document.querySelector('#room_number');
+const capacity = document.querySelector('#capacity');
+const capacitys = capacity.options;
+const timeIn = document.querySelector('#timein');
+const timeOut = document.querySelector('#timeout');
+const formSubmit = document.querySelector('.ad-form');
+
+const onTitleInput = () => {
+  const valueLength = adFormLabel.value.length;
+  if (valueLength < MIN_LABEL_LENGTH) {
+    adFormLabel.setCustomValidity(`Ещё ${MIN_LABEL_LENGTH - valueLength} символов.`);
+  } else if (valueLength > MAX_LABEL_LENGTH) {
+    adFormLabel.setCustomValidity(`Удалите лишние ${valueLength - MAX_LABEL_LENGTH} символы.`);
+  } else {
+    adFormLabel.setCustomValidity('');
+  }
+  adFormLabel.reportValidity();
+};
+
 const onTypeChange = (event) => {
   const newValue = event.target.value;
   minPrice = TypeToMinPriceMap[newValue];
   price.placeholder = TypeToMinPriceMap[newValue];
   price.min = TypeToMinPriceMap[newValue];
 };
-
-//валидация цен
-
-const MAX_PRICE = 1000000;
 
 const onPriceInput = () => {
   const valuePrice = price.value;
@@ -60,12 +57,6 @@ const onPriceInput = () => {
   price.reportValidity();
 };
 
-
-// валидация кол-ва комнат и гостей
-
-const roomNumber = document.querySelector('#room_number');
-const capacity = document.querySelector('#capacity');
-const capacitys = capacity.options;
 for (let i = 0; i < capacitys.length; i++) {
   if (!capacitys[i].selected) { capacitys[i].disabled = true; }
 }
@@ -94,11 +85,6 @@ const onRoomChange = () => {
   }
 };
 
-//вылидация времени
-
-const timeIn = document.querySelector('#timein');
-const timeOut = document.querySelector('#timeout');
-
 const onTimeChange = (event) => {
   const newValue = event.target.value;
   timeIn.value = newValue;
@@ -114,14 +100,10 @@ const getValidation = () => {
   timeOut.addEventListener('change', onTimeChange);
 };
 
-
-// вернуть форму в исходное состояние
-
-const formSubmit = document.querySelector('.ad-form');
 const returnOriginalState = () => {
   formSubmit.reset();
   returnMainPinIcon();
-
+  resetPhoto();
 };
 
 // окно успешной отправки
@@ -162,7 +144,7 @@ const openError = () => {
     errorTemplate.classList.add('hidden');
   });
   document.addEventListener('click', () => {
-    errorButton.classList.add('hidden');
+    errorTemplate.classList.add('hidden');
   });
 };
 
