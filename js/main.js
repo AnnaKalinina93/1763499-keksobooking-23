@@ -5,7 +5,7 @@ import { getData, sendData } from './api.js';
 import { showAlert } from './utils.js';
 import { updateMarkers, mapFiltersClick, resetFilter, clickReset } from './filter.js';
 import { debounce } from './utils/debounce.js';
-import { showAvatar, showPhoto } from './avatar.js';
+import { showAvatar, showPhoto, resetPhoto } from './avatar.js';
 
 const RERENDER_DELAY = 500;
 disableForm();
@@ -29,6 +29,7 @@ initailizeMap(() => {
           returnOriginalState();
           resetFilter();
           removeMarkers();
+          resetPhoto();
           getMarkers(cards.slice(0, 10));
         },
         () => openError());
@@ -43,6 +44,7 @@ initailizeMap(() => {
         () => {
           openWindow();
           returnOriginalState();
+          resetPhoto();
         },
         () => openError());
       reset();

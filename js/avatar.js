@@ -3,6 +3,7 @@ const fileChooserAvatar = document.querySelector('.ad-form__field input[type=fil
 const previewAvatar = document.querySelector('.ad-form-header__preview img');
 const fileChooserPhoto = document.querySelector('.ad-form__upload input[type=file]');
 const previewDiv = document.querySelector('.ad-form__photo');
+let previewPhoto = document.createElement('img');
 
 const showAvatar = () => {
   fileChooserAvatar.addEventListener('change', () => {
@@ -24,7 +25,6 @@ const showAvatar = () => {
 };
 
 const showPhoto = () => {
-  let previewPhoto = document.createElement('img');
   fileChooserPhoto.addEventListener('change', () => {
     const file = fileChooserPhoto.files[0];
     const fileName = file.name.toLowerCase();
@@ -49,4 +49,10 @@ const showPhoto = () => {
     }
   });
 };
-export { showAvatar, showPhoto };
+
+const resetPhoto = () => {
+  previewAvatar.src = 'img/muffin-grey.svg';
+  previewPhoto.remove();
+};
+
+export { showAvatar, showPhoto, resetPhoto };

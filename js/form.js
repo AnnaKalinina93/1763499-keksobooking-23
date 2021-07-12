@@ -1,6 +1,7 @@
 /* eslint-disable id-length */
 import { returnMainPinIcon } from './map.js';
 import { resetFilter } from './filter.js';
+import { resetPhoto } from './avatar.js';
 
 const MIN_LABEL_LENGTH = 30;
 const MAX_LABEL_LENGTH = 100;
@@ -102,7 +103,7 @@ const getValidation = () => {
 const returnOriginalState = () => {
   formSubmit.reset();
   returnMainPinIcon();
-
+  resetPhoto();
 };
 
 // окно успешной отправки
