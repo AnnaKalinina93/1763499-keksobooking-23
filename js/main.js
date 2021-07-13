@@ -8,6 +8,7 @@ import { debounce } from './utils/debounce.js';
 import { showAvatar, showPhoto, resetPhoto } from './avatar.js';
 
 const RERENDER_DELAY = 500;
+
 disableForm();
 
 initailizeMap(() => {
