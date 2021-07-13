@@ -1,6 +1,5 @@
 /* eslint-disable id-length */
 
-
 const TypeNameMap = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -27,8 +26,6 @@ const createCard = (object) => {
   capacity.textContent = `${object.offer.rooms} комнаты для ${object.offer.guests} гостей`;
   const textTime = cardElement.querySelector('.popup__text--time');
   textTime.textContent = `Заезд после ${object.offer.checkin}, выезд до ${object.offer.checkout}`;
-
-  //список удобств
 
   const featureListElement = cardElement.querySelector('.popup__features');
   featureListElement.innerHTML = '';

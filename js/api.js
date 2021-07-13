@@ -1,5 +1,6 @@
 const BASE_URL = 'https://23.javascript.pages.academy/keksobooking';
 const formSubmit = document.querySelector('.ad-form');
+
 const getData = (onSuccess, onError) => {
   fetch(
     `${BASE_URL}/data`)
