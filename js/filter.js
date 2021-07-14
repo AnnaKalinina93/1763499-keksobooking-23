@@ -1,4 +1,3 @@
-/* eslint-disable id-length */
 import { getMarkers, removeMarkers } from './map.js';
 import { returnOriginalState } from './form.js';
 const mapFiltersElement = document.querySelector('.map__filters');
@@ -52,8 +51,10 @@ const housingGuestsIsCorrect = (itemValue, filterValue) =>
 const housingFeatureIsCorrect = (itemFeatures, filterFeature) => {
   const filterFeatures = filterFeature.querySelectorAll('input:checked');
   if (filterFeatures.length === 0) { return true; }
-  else if (itemFeatures && Array.from(filterFeatures).every((element) =>
-    itemFeatures.indexOf(element.value) !== -1)) { return itemFeatures; }
+  if (!itemFeatures) { return false; }
+  return Array.from(filterFeatures).every((element) =>
+    itemFeatures.indexOf(element.value) !== -1);
+
 };
 
 const cardIsCorrect = (card) =>
@@ -65,16 +66,12 @@ const cardIsCorrect = (card) =>
 
 const getFilteredCards = (cards) => {
   const filteredCards = [];
-  for (let i = 0; i < cards.length; i++) {
-    const currentCard = cards[i];
-    if (cardIsCorrect(currentCard)) {
+  cards.forEach((element) => {
+    const currentCard = element;
+    if (filteredCards.length <= 10 && cardIsCorrect(currentCard)) {
       filteredCards.push(currentCard);
     }
-    if (filteredCards.length === 10) {
-      break;
-    }
-  }
-
+  });
   return filteredCards;
 };
 const updateMarkers = (cards) => {

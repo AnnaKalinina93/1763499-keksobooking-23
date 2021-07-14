@@ -1,4 +1,3 @@
-/* eslint-disable id-length */
 import { returnMainPinIcon } from './map.js';
 import { resetFilter } from './filter.js';
 import { resetPhoto } from './avatar.js';
@@ -23,6 +22,15 @@ const capacitys = capacity.options;
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 const formSubmit = document.querySelector('.ad-form');
+const success = document.querySelector('#success')
+  .content
+  .querySelector('.success')
+  .cloneNode(true);
+const errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error')
+  .cloneNode(true);
+const errorButton = document.querySelector('.error__button');
 
 const onTitleInput = () => {
   const valueLength = adFormLabel.value.length;
@@ -57,29 +65,29 @@ const onPriceInput = () => {
   price.reportValidity();
 };
 
-for (let i = 0; i < capacitys.length; i++) {
-  if (!capacitys[i].selected) { capacitys[i].disabled = true; }
-}
+Array.from(capacitys).forEach((element) => {
+  if (!element.selected) { element.disabled = true; }
+});
 const onRoomChange = () => {
   const currentValue = Number(roomNumber.value);
   if (currentValue !== 100) {
-    for (let i = 0; i < capacitys.length; i++) {
-      if (Number(capacitys[i].value) > currentValue) {
-        capacitys[i].selected = false;
-        capacitys[i].disabled = true;
+    Array.from(capacitys).forEach((element) => {
+      if (Number(element.value) > currentValue) {
+        element.selected = false;
+        element.disabled = true;
       } else {
-        capacitys[i].disabled = false;
-        capacitys[i].selected = true;
+        element.disabled = false;
+        element.selected = true;
       }
-    }
+    });
     capacitys[capacitys.length - 1].disabled = true;
     capacitys[capacitys.length - 1].selected = false;
   }
   if (currentValue === 100) {
-    for (let i = 0; i < capacitys.length - 1; i++) {
-      capacitys[i].disabled = true;
-      capacitys[i].selected = false;
-    }
+    Array.from(capacitys).forEach((element) => {
+      element.disabled = true;
+      element.selected = false;
+    });
     capacitys[capacitys.length - 1].disabled = false;
     capacitys[capacitys.length - 1].selected = true;
   }
@@ -108,44 +116,50 @@ const returnOriginalState = () => {
 
 // окно успешной отправки
 
+const onDocumentSuccessEscapePressed = (evt) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+    closeWindow();
+  }
+};
+const onDocumentSuccessClick = () => {
+  closeWindow();
+};
+function closeWindow() {
+  success.remove();
+  document.removeEventListener('keydown', onDocumentSuccessEscapePressed);
+  document.removeEventListener('click', onDocumentSuccessClick);
+}
 const openWindow = () => {
-  const success = document.querySelector('#success')
-    .content
-    .querySelector('.success')
-    .cloneNode(true);
   document.body.appendChild(success);
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      success.classList.add('hidden');
-    }
-  });
-  document.addEventListener('click', () => {
-    success.classList.add('hidden');
-  });
+  document.addEventListener('keydown', onDocumentSuccessEscapePressed);
+  document.addEventListener('click', onDocumentSuccessClick);
 };
 
 // окно ошибки
-
+const onDocumentErrorEscapePressed = (evt) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+    closeError();
+  }
+};
+const onDocumentErrorClick = () => {
+  closeError();
+};
+const onDocumentErrorClickButton = () => {
+  closeError();
+};
+function closeError() {
+  errorTemplate.remove();
+  document.removeEventListener('keydown', onDocumentErrorEscapePressed);
+  document.removeEventListener('click', onDocumentErrorClick);
+  errorButton.removeEventListener('click', onDocumentErrorClickButton);
+}
 const openError = () => {
-  const errorTemplate = document.querySelector('#error')
-    .content
-    .querySelector('.error')
-    .cloneNode(true);
   document.body.appendChild(errorTemplate);
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      errorTemplate.classList.add('hidden');
-    }
-  });
-  const errorButton = document.querySelector('.error__button');
-  errorButton.addEventListener('click', () => {
-    errorTemplate.classList.add('hidden');
-  });
-  document.addEventListener('click', () => {
-    errorTemplate.classList.add('hidden');
-  });
+  document.addEventListener('keydown', onDocumentErrorEscapePressed);
+  document.addEventListener('click', onDocumentErrorClick);
+  errorButton.addEventListener('click', onDocumentErrorClickButton);
 };
 
 // нажатие кнопки reset

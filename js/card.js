@@ -1,5 +1,3 @@
-/* eslint-disable id-length */
-
 const TypeNameMap = {
   palace: 'Дворец',
   flat: 'Квартира',
