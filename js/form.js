@@ -30,7 +30,6 @@ const errorTemplate = document.querySelector('#error')
   .content
   .querySelector('.error')
   .cloneNode(true);
-const errorButton = document.querySelector('.error__button');
 
 const onTitleInput = () => {
   const valueLength = adFormLabel.value.length;
@@ -114,8 +113,6 @@ const returnOriginalState = () => {
   resetPhoto();
 };
 
-// окно успешной отправки
-
 const onDocumentSuccessEscapePressed = (evt) => {
   if (evt.key === 'Escape' || evt.key === 'Esc') {
     evt.preventDefault();
@@ -136,7 +133,6 @@ const openWindow = () => {
   document.addEventListener('click', onDocumentSuccessClick);
 };
 
-// окно ошибки
 const onDocumentErrorEscapePressed = (evt) => {
   if (evt.key === 'Escape' || evt.key === 'Esc') {
     evt.preventDefault();
@@ -146,23 +142,19 @@ const onDocumentErrorEscapePressed = (evt) => {
 const onDocumentErrorClick = () => {
   closeError();
 };
-const onDocumentErrorClickButton = () => {
-  closeError();
-};
+
 function closeError() {
   errorTemplate.remove();
   document.removeEventListener('keydown', onDocumentErrorEscapePressed);
   document.removeEventListener('click', onDocumentErrorClick);
-  errorButton.removeEventListener('click', onDocumentErrorClickButton);
 }
 const openError = () => {
   document.body.appendChild(errorTemplate);
+  const errorButton = document.querySelector('.error__button');
   document.addEventListener('keydown', onDocumentErrorEscapePressed);
   document.addEventListener('click', onDocumentErrorClick);
-  errorButton.addEventListener('click', onDocumentErrorClickButton);
+  errorButton.addEventListener('click', () => errorTemplate.remove());
 };
-
-// нажатие кнопки reset
 
 const reset = () => {
   const buttonReset = document.querySelector('.ad-form__reset');
