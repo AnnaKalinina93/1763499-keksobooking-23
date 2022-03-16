@@ -1,5 +1,8 @@
 ﻿# Личный проект «Кексобукинг»
 
+
+ТЗ: https://docs.google.com/document/d/1ADGrI-j4Ol7Y-_DtkeQSRCdL8RBWcMCYSwVzphrvgyk/edit?usp=sharing  сервис размещения объявлений о сдаче в аренду недвижимости в центре Токио. Пользователям предоставляется возможность размещать объявления о своей недвижимости или просматривать уже размещённые объявления.
+
 * Студент: [Анна Калинина](https://up.htmlacademy.ru/javascript/23/user/1763499).
 * Наставник: [Денис Горшков](https://htmlacademy.ru/profile/satrasmatras).
 
